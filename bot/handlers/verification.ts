@@ -13,6 +13,9 @@ import { Message } from "discord.js";
  * @param ctx message context
  */
 export function initFromGuild(arg: string, ctx: Message) {
+    // Thumbs up react
+    ctx.react('\uD83D\uDC4D');
+    
     ctx.author.send('Hi, you have requested ARC verification for a server. ' + 
         'The server owner has requested that you complete this form before ' +
         'a verified role will be granted.\n\nhttps://www.google.com');
