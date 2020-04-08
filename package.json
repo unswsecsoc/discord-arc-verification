@@ -1,0 +1,17 @@
+{
+  "name": "verificationbot",
+  "version": "1.0.0",
+  "description": "arc verification bot for unsw",
+  "main": "bot/index.ts",
+  "repository": "https://github.com/lecafard/discord-arc-verification",
+  "author": "tom <hi@tomn.me>",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "discord.js": "^12.1.1"
+  },
+  "devDependencies": {
+    "@types/node": "^13.11.0",
+    "typescript": "^3.8.3"
+  }
+}
