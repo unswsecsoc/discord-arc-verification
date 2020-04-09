@@ -1,11 +1,11 @@
 import { Message } from "discord.js";
 import handlers, { MAX_LENGTH } from './index';
 import { BOT_URL } from "../config";
-import { DiscordObjectType } from "../types";
+import { DiscordObjectType } from "../lib/types";
 
 // Only generate the help message once
 let helpMessage = '';
-function generateHelpMessage() {
+function generateHelpMessage(): void {
     helpMessage = '```\nARC Verification Bot\n'
                      + '====================\n'
                      + `Source: ${BOT_URL}\n\n`;
@@ -26,10 +26,11 @@ function generateHelpMessage() {
                    '-------------\n' + userCommands + '```';
 }
 
-export default function handler(arg: string, ctx: Message) {
+export default function handler(arg: string, ctx: Message): void {
     if (!helpMessage) generateHelpMessage();
 
-    return ctx.author.send(helpMessage);
+    ctx.author.send(helpMessage);
+    return;
 }
 handler.help = {
     user: 'shows this help message',

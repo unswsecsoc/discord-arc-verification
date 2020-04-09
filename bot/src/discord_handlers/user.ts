@@ -12,8 +12,8 @@ import { Message } from "discord.js";
  * @param arg server name
  * @param ctx message context
  */
-export function revokeAccess(arg: string, ctx: Message) {
-
+export function revokeAccess(arg: string, ctx: Message): void {
+    return;
 }
 
 /**
@@ -23,8 +23,8 @@ export function revokeAccess(arg: string, ctx: Message) {
  * @param arg 
  * @param ctx message context
  */
-export function warnDeleteAllRecords(arg: string, ctx: Message) {
-
+export function warnDeleteAllRecords(arg: string, ctx: Message): void {
+    return;
 }
 
 /**
@@ -33,6 +33,6 @@ export function warnDeleteAllRecords(arg: string, ctx: Message) {
  * @param arg 
  * @param ctx message context
  */
-export function deleteAllRecords(arg: string, ctx: Message) {
-
+export function deleteAllRecords(arg: string, ctx: Message): void {
+    return;
 }

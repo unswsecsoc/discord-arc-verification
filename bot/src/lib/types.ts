@@ -1,6 +1,6 @@
 import { Message } from "discord.js";
 
-export interface IHandler {
+export interface Handler {
     (arg: string, ctx: Message): void;
     help?: {
         guild?: string;

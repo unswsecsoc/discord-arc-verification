@@ -1,8 +1,8 @@
-import { IHandler } from '../types';
+import { Handler } from '../lib/types';
 import * as VerificationHandler from './verification';
 import HelpHandler from './help';
 
-const handlers: {[key: string]: IHandler} = {
+const handlers: {[key: string]: Handler} = {
     'verify': VerificationHandler.initFromGuild,
     'avhelp': HelpHandler
 }
