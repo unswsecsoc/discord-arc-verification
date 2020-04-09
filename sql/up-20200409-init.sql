@@ -18,8 +18,11 @@ CREATE TABLE users (
 
 CREATE TABLE clubs (
 	_id			SERIAL		PRIMARY KEY,
-	name			VARCHAR(32)	NOT NULL,
+	name			VARCHAR(40)	NOT NULL,
+	permalink		VARCHAR(16)	NOT NULL UNIQUE,
+	description		TEXT,
 	email			VARCHAR(255)	NOT NULL,
+	admin_channel_id	VARCHAR(20),
 	admin_role_id		VARCHAR(20),
 	verified_role_id	VARCHAR(20),
 	discord_id		VARCHAR(20)	UNIQUE,
@@ -39,3 +42,4 @@ CREATE TABLE members (
 );
 
 CREATE TRIGGER update_timestamp BEFORE UPDATE ON users FOR EACH ROW EXECUTE PROCEDURE trigger_set_timestamp();
+CREATE TRIGGER update_timestamp BEFORE UPDATE ON clubs FOR EACH ROW EXECUTE PROCEDURE trigger_set_timestamp();

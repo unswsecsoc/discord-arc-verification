@@ -1,0 +1,14 @@
+{
+  "name": "verificationbot-discord",
+  "version": "1.0.0",
+  "description": "discord bot",
+  "main": "bot/index.ts",
+  "repository": "https://github.com/lecafard/discord-arc-verification",
+  "author": "tom <hi@tomn.me>",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "discord.js": "^12.1.1",
+    "fastify": "^2.13.0"
+  }
+}
