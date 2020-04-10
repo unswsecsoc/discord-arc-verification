@@ -1,0 +1,14 @@
+attrs==19.3.0
+certifi==2019.11.28
+chardet==3.0.4
+falcon==2.0.0
+gunicorn==20.0.4
+idna==2.9
+importlib-metadata==1.6.0
+jsonschema==3.2.0
+psycopg2==2.8.4
+pyrsistent==0.16.0
+requests==2.23.0
+six==1.14.0
+urllib3==1.25.8
+zipp==3.1.0
