@@ -1,8 +1,16 @@
+CREATE OR REPLACE FUNCTION trigger_set_timestamp()
+RETURNS TRIGGER AS $$
+BEGIN
+  NEW.updated_at = NOW();
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
 CREATE TABLE users (
 	_id		SERIAL		PRIMARY KEY,
 	given_name	VARCHAR(64)	NOT NULL,
 	family_name	VARCHAR(64),
-	zid		CHAR(7),
+	zid		CHAR(8),
 	arc_member	BOOLEAN		NOT NULL,
 	email		VARCHAR(255),
 	phone		VARCHAR(16),
@@ -37,7 +45,7 @@ CREATE TABLE members (
 	user_id		INTEGER		REFERENCES users(_id) ON DELETE CASCADE,
 	club_id		INTEGER		REFERENCES clubs(_id) ON DELETE CASCADE,
 	created_at	TIMESTAMP	NOT NULL DEFAULT CURRENT_TIMESTAMP,
-	deleted_at	TIMESTAMP
+	deleted_at	TIMESTAMP,
 
 	UNIQUE(user_id, club_id)
 );

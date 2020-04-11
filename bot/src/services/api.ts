@@ -9,16 +9,16 @@ export enum APIErrorMessages {
 }
 
 const client = axios.create({
-    url: API_URL,
+    baseURL: API_URL,
     timeout: 2000,
     headers: {
         authorization: `Bearer m2m.${M2M_SECRET}`
     }
 });
 
-export async function createVerification(id: string, guild_id: string): Promise<NewVerification> {
-    const response: AxiosResponse<APIResponse<NewVerification>> = await client.post('/verifications', {
-        id,
+export async function createVerification(user_id: string, guild_id: string): Promise<NewVerification> {
+    const response: AxiosResponse<APIResponse<NewVerification>> = await client.post('/admin/verifications', {
+        user_id,
         guild_id
     });
     if (response.data.error) throw new APIError(response.data.error);

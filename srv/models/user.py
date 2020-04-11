@@ -21,3 +21,14 @@ class User(Model):
 
     def __init__(self, **args):
         super().__init__(args)
+    
+    @classmethod
+    def create(cls, data):
+        return super().create({
+            'is_verified': False,
+            **data
+        }, ['_id', 'created_at', 'updated_at'])
+
+    @classmethod
+    def by_discord_id(cls, discord_id):
+        return cls.by_id(discord_id, id_col='discord_id')

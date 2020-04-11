@@ -1,4 +1,4 @@
-member_schema = {
+user_schema = {
     'type': 'object',
     'properties': {
         'zid': {

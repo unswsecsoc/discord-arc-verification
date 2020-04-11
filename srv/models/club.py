@@ -1,7 +1,5 @@
 import psycopg2.extras
 from datetime import date
-from .event import Event
-from .member import Member
 from . import Model
 
 class Club(Model):
@@ -26,17 +24,16 @@ class Club(Model):
     def __init__(self, **args):
         super().__init__(args)
 
-    def get_events(self, is_published:bool = None):
-        return Event.by_club(self._id, is_published)
-
     def get_users(self):
         return User.by_club(self._id)
 
     @classmethod
-    def by_permalink(cls, permalink):
-        query = f'SELECT {cls._get_columns_sql()} FROM {cls._table} WHERE permalink=%s'
-        return cls._query_one(query, (permalink,))
+    def create(cls, data):
+        return super().create({
+            'is_enabled': False,
+            **data
+        }, ['_id', 'created_at', 'updated_at'])
 
     @classmethod
-    def create(cls, data):
-        return super().create(data, ['_id', 'created_at', 'updated_at'])
+    def by_discord_id(cls, discord_id):
+        return cls.by_id(discord_id, id_col='discord_id')

@@ -9,9 +9,7 @@ export default async function(fastify: FastifyInstance): Promise<void> {
         properties: {
             snowflake: {
                 type: 'string',
-                minLength: 16,
-                maxLength: 20,
-                pattern: '^\\d+$'
+                pattern: '^\\d{16,20}$'
             }
         }
     });

@@ -27,9 +27,9 @@ club_schema = {
             'type': 'string',
             'pattern': r'^\d+$',
             'minLength': 16,
-            'maxLength': '20'
+            'maxLength': 20
         }
     },
-    'required': ['name', 'permalink', 'description', 'email', 'website'],
+    'required': ['name', 'permalink', 'description', 'email', 'website', 'discord_id'],
     'additionalProperties': False
 }

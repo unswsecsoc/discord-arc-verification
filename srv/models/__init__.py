@@ -79,9 +79,9 @@ class Model(object):
         return obj
 
     @classmethod
-    def by_id(cls, _id, exclude=None):
+    def by_id(cls, _id, exclude=None, id_col='_id'):
         if exclude == None: exclude = cls._default_exclude
-        query = f'SELECT {cls._get_columns_sql(exclude=exclude)} FROM {cls._table} WHERE _id=%s'
+        query = f'SELECT {cls._get_columns_sql(exclude=exclude)} FROM {cls._table} WHERE {id_col}=%s'
         return cls._query_one(query, (_id,))
     
     @classmethod

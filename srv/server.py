@@ -1,9 +1,12 @@
 import falcon
 
 import lib.errors
+import lib.db
+import lib.redis
 
 from resources.info import InfoResource
 from resources.clubs import ClubsListResource, ClubResource
+import resources.verifications
 
 def handle_404(req: falcon.Request, res: falcon.Response):
     res.status = falcon.HTTP_NOT_FOUND
@@ -25,6 +28,9 @@ application.add_route('/info', InfoResource())
 
 application.add_route('/clubs', ClubsListResource())
 application.add_route('/clubs/{club_id}', ClubResource())
+
+application.add_route('/admin/verifications', resources.verifications.Admin())
+application.add_route('/verifications/{token}', resources.verifications.User())
 
 application.add_sink(handle_404, '')
 application.add_error_handler(lib.errors.BaseError, handle_errors)
