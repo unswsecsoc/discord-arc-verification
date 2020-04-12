@@ -47,20 +47,23 @@ class Model(object):
         return ','.join(i for i in cls._columns.keys() if i not in exclude)
     
     @classmethod
-    def _query_many(cls, query, params=tuple()):
+    def _query_many(cls, query, params=tuple(), raw=False):
         with cls._conn, cls._conn.cursor(cursor_factory=psycopg2.extras.DictCursor) as cur:
             logger.debug(f'SQL Query: {query}')
             cur.execute(query, params)
+            if raw: return cur.fetchall()
+            
             return [cls(**i) for i in cur.fetchall()]
     
     @classmethod
-    def _query_one(cls, query, params=tuple()):
+    def _query_one(cls, query, params=tuple(), raw=False):
         with cls._conn, cls._conn.cursor(cursor_factory=psycopg2.extras.DictCursor) as cur:
             logger.debug(f'SQL Query: {query}')
             try:
                 cur.execute(query, params)
                 res = cur.fetchone()
                 if not res or cur.rowcount == -1: return None
+                if raw: return res
                 return cls(**res)
             except psycopg2.errors.UniqueViolation as e:
                 raise DBUniqueError(e)

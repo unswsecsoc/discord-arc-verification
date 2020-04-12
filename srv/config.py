@@ -15,6 +15,7 @@ redis_port = os.getenv('REDIS_PORT', '6379')
 
 api_url = os.getenv('API_URL', 'http://localhost:8000')
 bot_url = os.getenv('BOT_URL', 'http://localhost:3000')
+bot_secret = os.getenv('BOT_SECRET', '')
 
 recaptcha_secret = os.getenv('RECAPTCHA_SECRET', '')
 

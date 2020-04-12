@@ -29,5 +29,6 @@ user_schema = {
     'anyOf': [
         {'required': ['zid']},
         {'required': ['email', 'phone']}
-    ]
+    ],
+    'additionalProperties': False
 }

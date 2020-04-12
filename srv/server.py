@@ -6,6 +6,7 @@ import lib.redis
 
 from resources.info import InfoResource
 from resources.clubs import ClubsListResource, ClubResource
+import resources.validations
 import resources.verifications
 
 def handle_404(req: falcon.Request, res: falcon.Response):
@@ -31,6 +32,7 @@ application.add_route('/clubs/{club_id}', ClubResource())
 
 application.add_route('/admin/verifications', resources.verifications.Admin())
 application.add_route('/verifications/{token}', resources.verifications.User())
+application.add_route('/validations/{token}', resources.validations.User())
 
 application.add_sink(handle_404, '')
 application.add_error_handler(lib.errors.BaseError, handle_errors)
