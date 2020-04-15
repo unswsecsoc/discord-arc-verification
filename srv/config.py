@@ -8,7 +8,7 @@ postgres_name = os.getenv('POSTGRES_DB', 'arc_verification')
 postgres_host = os.getenv('POSTGRES_HOST', '172.17.0.2')
 postgres_port = os.getenv('POSTGRES_PORT', '5432')
 postgres_user = os.getenv('POSTGRES_USER', 'postgres')
-postgres_pass = os.getenv('POSTGRES_PASSWORD', '')
+postgres_pass = os.getenv('POSTGRES_PASSWORD', 'postgres')
 
 redis_host = os.getenv('REDIS_HOST', '172.17.0.3')
 redis_port = os.getenv('REDIS_PORT', '6379')

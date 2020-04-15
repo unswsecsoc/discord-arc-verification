@@ -17,7 +17,7 @@ const client = axios.create({
 });
 
 export async function createVerification(user_id: string, guild_id: string): Promise<NewVerification> {
-    const response: AxiosResponse<APIResponse<NewVerification>> = await client.post('/admin/verifications', {
+    const response: AxiosResponse<APIResponse<NewVerification>> = await client.post('/priv/verifications', {
         user_id,
         guild_id
     });

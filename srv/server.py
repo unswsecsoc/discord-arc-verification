@@ -30,7 +30,7 @@ application.add_route('/info', InfoResource())
 application.add_route('/clubs', ClubsListResource())
 application.add_route('/clubs/{club_id}', ClubResource())
 
-application.add_route('/admin/verifications', resources.verifications.Admin())
+application.add_route('/priv/verifications', resources.verifications.Private())
 application.add_route('/verifications/{token}', resources.verifications.User())
 application.add_route('/validations/{token}', resources.validations.User())
 

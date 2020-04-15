@@ -1,6 +1,6 @@
 import falcon
 from config import api_url
-from . import Resource
+from . import Resource, require_private_auth
 from falcon.media.validators import jsonschema
 from store.verification import UserVerification, EmailVerification
 from views.verification import admin_verification_schema
@@ -10,7 +10,8 @@ from models.member import Member as MemberModel
 import lib.rpc
 import requests
 
-class Admin(Resource):
+@falcon.before(require_private_auth)
+class Private(Resource):
     @jsonschema.validate(admin_verification_schema)
     def on_post(self, req: falcon.Request, res: falcon.Response):
         user_id = req.media['user_id']
