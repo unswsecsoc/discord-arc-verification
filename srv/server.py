@@ -27,7 +27,7 @@ def handle_errors(ex, req: falcon.Request, res: falcon.Response, params: any):
 application = falcon.API()
 application.add_route('/info', InfoResource())
 
-application.add_route('/clubs', ClubsListResource())
+application.add_route('/priv/clubs', ClubsListResource())
 application.add_route('/clubs/{club_id}', ClubResource())
 
 application.add_route('/priv/verifications', resources.verifications.Private())

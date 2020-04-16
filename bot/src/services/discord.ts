@@ -9,13 +9,13 @@ const client = new Client();
  */
 client.on('ready', () => {
     console.log(`Logged in as ${client.user.tag}!`);
-    client.user.setPresence({
-        activity: {
-            name: 'type !avhelp',
-            type: 'PLAYING',
-            url: config.BOT_URL
-        }
-    });
+    // client.user.setPresence({
+    //     activity: {
+    //         name: 'type !avhelp',
+    //         type: 'PLAYING',
+    //         url: config.BOT_URL
+    //     }
+    // });
 });
 
 client.on('message', async (ctx: Message) => {

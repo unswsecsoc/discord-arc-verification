@@ -21,5 +21,5 @@ class Resource(object):
         }
 
 def require_private_auth(req: falcon.Request, res: falcon.Response, resource: Resource, params):
-    if req.headers.get('AUTHORIZATION', '') != f'Bearer {bot_secret}':
+    if req.headers.get('AUTHORIZATION', '') != f'Bearer srv.{bot_secret}':
         raise falcon.HTTPUnauthorized('unauthorized')

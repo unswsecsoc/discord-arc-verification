@@ -1,11 +1,11 @@
 import falcon
-from config import api_url
 from . import Resource
 from falcon.media.validators import jsonschema
 from store.verification import EmailVerification
 from models.user import User as UserModel
 from models.club import Club as ClubModel
 from models.member import Member as MemberModel
+import lib.mail
 import lib.rpc
 import logging
 

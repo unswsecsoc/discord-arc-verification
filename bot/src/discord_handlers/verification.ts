@@ -3,7 +3,7 @@
  */
 
 import { Message } from "discord.js";
-import { createVerification, APIError, APIErrorMessages } from '../services/api';
+import { createVerification, APIError, APIErrorMessage } from '../services/api';
 
 
 /**
@@ -27,15 +27,16 @@ export async function initFromGuild(arg: string, ctx: Message): Promise<void> {
         return;
     } catch(e) {
         if (e instanceof APIError) {
-            if (e.message === APIErrorMessages.BannedVerification.toString()) {
+            if (e.code === APIErrorMessage.BannedVerification) {
                 ctx.react('\uD83D\uDC4D');
                 ctx.author.send('Hi, the server owner has banned you from ' + 
                     'participating on this server. Please contact them to resolve ' + 
                     'this issue.');
-            } else if (e.message === APIErrorMessages.AlreadyVerified.toString()) {
+            } else if (e.code === APIErrorMessage.AlreadyVerified) {
                 return;
             }
         }
+        
         throw e;
     }
 

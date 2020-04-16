@@ -18,8 +18,13 @@ class Model(object):
         for i in self.__class__._columns:
             setattr(self, i, args.get(i, self.__class__._columns[i]))
     
-    def toJSON(self, exclude=None):
+    def toJSON(self, include=None, exclude=None):
         out = {}
+        if include:
+            for i in include:
+                out[i] = getattr(self, i)
+            return out
+
         if exclude == None: exclude = self.__class__._default_exclude
         for i in self.__class__._columns:
             if i in exclude: continue

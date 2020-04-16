@@ -13,9 +13,13 @@ postgres_pass = os.getenv('POSTGRES_PASSWORD', 'postgres')
 redis_host = os.getenv('REDIS_HOST', '172.17.0.3')
 redis_port = os.getenv('REDIS_PORT', '6379')
 
-api_url = os.getenv('API_URL', 'http://localhost:8000')
+web_url = os.getenv('WEB_URL', 'http://localhost:8000')
 bot_url = os.getenv('BOT_URL', 'http://localhost:3000')
 bot_secret = os.getenv('BOT_SECRET', '')
+
+mailgun_domain = os.getenv('MAILGUN_DOMAIN', '')
+mailgun_api_key = os.getenv('MAILGUN_API_KEY', '')
+mailgun_from = os.getenv('MAILGUN_FROM', '')
 
 recaptcha_secret = os.getenv('RECAPTCHA_SECRET', '')
 

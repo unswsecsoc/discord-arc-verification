@@ -1,12 +1,13 @@
 import falcon
-from config import api_url
+from config import web_url
 from . import Resource, require_private_auth
 from falcon.media.validators import jsonschema
 from store.verification import UserVerification, EmailVerification
-from views.verification import admin_verification_schema
+from views.verification import admin_verification_schema, user_verification_schema
 from models.user import User as UserModel
 from models.club import Club as ClubModel
 from models.member import Member as MemberModel
+from lib.mail import send_validation
 import lib.rpc
 import requests
 
@@ -32,7 +33,7 @@ class Private(Resource):
 
         token, expires = UserVerification.create(user_id, guild_id)
         self.send_response(res, {
-            "url": f"{api_url}/verifications/{token}",
+            "url": f"{web_url}/verifications/{token}",
             "expires": expires.seconds
         })
         
@@ -42,7 +43,7 @@ class User(Resource):
         obj = UserVerification.by_token(token)
 
         if not obj:
-            return self.send_error(res, 'InvalidToken')
+            return self.send_error(res, 'InvalidToken', falcon.HTTP_BAD_REQUEST)
         
         # check if club exists and is enabled
         club = ClubModel.by_discord_id(obj.guild_id)
@@ -54,11 +55,11 @@ class User(Resource):
         user = UserModel.by_discord_id(obj.user_id)
 
         return self.send_response(res, {
-            "user_validated": user is not None,
-            "guild_id": obj.guild_id
+            "user_verified": user is not None,
+            "club": club.toJSON(["_id", "description", "email", "name", "permalink", "website"]) 
         })
         
-    
+    @jsonschema.validate(user_verification_schema)
     def on_post(self, req: falcon.Request, res: falcon.Response, token):
         obj = UserVerification.by_token(token)
 
@@ -77,7 +78,7 @@ class User(Resource):
         user = UserModel.by_discord_id(obj.user_id)
 
         if user == None and "user" not in req.media:
-            return self.send_error('NoUserDetails', falcon.HTTP_BAD_REQUEST)
+            return self.send_error(res, 'NoUserDetails', falcon.HTTP_BAD_REQUEST)
 
         if user == None:
             user = UserModel.create({"discord_id": obj.user_id, **req.media["user"]})
@@ -96,7 +97,14 @@ class User(Resource):
             })
         else:
             [token, expires] = EmailVerification.create(user._id)
-            print(token)
+
+            send_validation(
+                to=f"{user.zid}@unsw.edu.au" if user.zid else user.email,
+                name=user.given_name,
+                link=f"{web_url}/validations/{token}",
+                expires=expires
+            )
+
             return self.send_response(res, {
                 "user_verified": False
             })
