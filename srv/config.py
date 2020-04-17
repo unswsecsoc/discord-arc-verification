@@ -13,7 +13,8 @@ postgres_pass = os.getenv('POSTGRES_PASSWORD', 'postgres')
 redis_host = os.getenv('REDIS_HOST', '172.17.0.3')
 redis_port = os.getenv('REDIS_PORT', '6379')
 
-web_url = os.getenv('WEB_URL', 'http://localhost:8000')
+web_url = os.getenv('WEB_URL', 'http://localhost:8080')
+api_url = os.getenv('API_URL', 'http://localhost:8000')
 bot_url = os.getenv('BOT_URL', 'http://localhost:3000')
 bot_secret = os.getenv('BOT_SECRET', '')
 

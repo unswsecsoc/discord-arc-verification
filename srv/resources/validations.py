@@ -5,6 +5,7 @@ from store.verification import EmailVerification
 from models.user import User as UserModel
 from models.club import Club as ClubModel
 from models.member import Member as MemberModel
+from config import web_url
 import lib.mail
 import lib.rpc
 import logging
@@ -22,7 +23,7 @@ class User(Resource):
         user = UserModel.by_id(obj.user_id)
         if user.is_verified:
             EmailVerification.destroy(token)
-            return self.send_response(res, True)
+            raise falcon.HTTPTemporaryRedirect(f'{web_url}/verify_success')
         
         user.set_verified()
         for club in user.get_club_discord_ids():
@@ -33,4 +34,4 @@ class User(Resource):
 
         EmailVerification.destroy(token)
 
-        return self.send_response(res, True)
+        raise falcon.HTTPTemporaryRedirect(f'{web_url}/verify_success')

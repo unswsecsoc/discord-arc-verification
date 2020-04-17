@@ -24,9 +24,10 @@ client.on('guildCreate', async (guild) => {
     try {
         const club = await getClub(guild.id);
         if (!club) guild.leave();
+        console.log(`guild ${guild.name}, id: ${guild.id} not in database, leaving...`);
     } catch (e) {
         guild.leave();
-        console.error('Something went wrong when joining guild', e);
+        console.error(`Something went wrong when joining guild ${guild.name} id:${guild.id}`, e);
     }
 });
 

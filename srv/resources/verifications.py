@@ -1,5 +1,5 @@
 import falcon
-from config import web_url
+from config import api_url, web_url
 from . import Resource, require_private_auth
 from falcon.media.validators import jsonschema
 from store.verification import UserVerification, EmailVerification
@@ -8,8 +8,11 @@ from models.user import User as UserModel
 from models.club import Club as ClubModel
 from models.member import Member as MemberModel
 from lib.mail import send_validation
+from logging import getLogger
 import lib.rpc
 import requests
+
+logger = getLogger(__name__)
 
 @falcon.before(require_private_auth)
 class Private(Resource):
@@ -83,11 +86,14 @@ class User(Resource):
         if user == None:
             user = UserModel.create({"discord_id": obj.user_id, **req.media["user"]})
         
-        MemberModel.create({
-            "user_id": user._id,
-            "club_id": club._id
-        })
-        
+        try:
+            MemberModel.create({
+                "user_id": user._id,
+                "club_id": club._id
+            })
+        except Exception as e:
+            logger.warn("Error creating member: ", e)
+
         UserVerification.destroy(token)
 
         if user.is_verified:
@@ -101,7 +107,7 @@ class User(Resource):
             send_validation(
                 to=f"{user.zid}@unsw.edu.au" if user.zid else user.email,
                 name=user.given_name,
-                link=f"{web_url}/validations/{token}",
+                link=f"{api_url}/validations/{token}",
                 expires=expires
             )
 
