@@ -1,7 +1,7 @@
 from models.club import Club
 import falcon
 from falcon.media.validators import jsonschema
-from views.club import club_schema
+from views.club import club_schema, club_guild_update_schema
 from . import Resource, require_private_auth
 from lib.recaptcha import validate_recaptcha
 
@@ -24,10 +24,15 @@ class ClubByGuildResource(Resource):
         self.send_response(res, obj.toJSON())
     
     """
-    Updates a property in guild
+    Updates a discord related property in guild
     """
+    @jsonschema.validate(club_guild_update_schema)
     def on_put(self, req: falcon.Request, res: falcon.Response, guild_id: str):
-        pass
+        obj = Club.by_discord_id(guild_id)
+        if not obj:
+            raise falcon.HTTPNotFound()
+        obj.update_value(req.media['key'], req.media['value'])
+        return self.send_response(res, True)
 
 class ClubResource(Resource):
     def on_get(self, req: falcon.Request, res: falcon.Response, club_id: str):
@@ -36,7 +41,7 @@ class ClubResource(Resource):
         else:
             obj = Club.by_permalink(club_id)
         if obj and obj.is_enabled:
-            return self.send_response(res, obj.toJSON(["_id", "description", "email", "name", "permalink", "website"]) )
+            return self.send_response(res, obj.toJSON(["_id", "description", "email", "name", "permalink", "website"]))
         
         raise falcon.HTTPNotFound()
 

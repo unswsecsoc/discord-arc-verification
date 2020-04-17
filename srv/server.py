@@ -29,7 +29,7 @@ application = falcon.API()
 application.add_route('/info', InfoResource())
 
 application.add_route('/priv/clubs', ClubsListResource())
-application.add_route('/priv/clubs/by_guild/{guild_id}', ClubByGuildResource())
+application.add_route('/priv/clubs_by_guild/{guild_id}', ClubByGuildResource())
 application.add_route('/clubs/{club_id}', ClubResource())
 
 application.add_route('/priv/verifications', resources.verifications.Private())

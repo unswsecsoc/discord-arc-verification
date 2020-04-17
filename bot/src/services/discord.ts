@@ -1,6 +1,8 @@
 import * as config from '../config';
 import { Client, Message } from 'discord.js';
 import handlers from '../discord_handlers';
+import { getClub } from './api';
+import { createContext } from 'vm';
 
 const client = new Client();
 
@@ -18,7 +20,17 @@ client.on('ready', () => {
     // });
 });
 
-client.on('message', async (ctx: Message) => {
+client.on('guildCreate', async (guild) => {
+    try {
+        const club = await getClub(guild.id);
+        if (!club) guild.leave();
+    } catch (e) {
+        guild.leave();
+        console.error('Something went wrong when joining guild', e);
+    }
+});
+
+client.on('message', async (ctx) => {
     // Don't respond to bots
     if (ctx.author.bot) return;
 

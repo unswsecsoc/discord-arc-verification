@@ -1,12 +1,13 @@
 import { Handler } from '../lib/types';
 import * as VerificationHandler from './verification';
 import HelpHandler from './help';
-import * as GuildHandler from './guild';
+import * as GuildAdminHandler from './guild_admin';
 
 const handlers: {[key: string]: Handler} = {
     'verify': VerificationHandler.initFromGuild,
     'avhelp': HelpHandler,
-    'avsetverified': GuildHandler.setVerificationRole
+    'avsetverified': GuildAdminHandler.setVerificationRole,
+    'avsetadmin': GuildAdminHandler.setAdminChannel,
 }
 
 export default handlers;

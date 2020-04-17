@@ -26,6 +26,9 @@ class Club(Model):
 
     def get_users(self):
         return User.by_club(self._id)
+    
+    def update_value(self, key, value):
+        return self.__class__._query_one(f'UPDATE {self.__class__._table} SET {key}=%s WHERE _id=%s RETURNING {key}', (value, self._id))
 
     @classmethod
     def create(cls, data):
@@ -36,4 +39,4 @@ class Club(Model):
 
     @classmethod
     def by_discord_id(cls, discord_id):
-        return cls.by_id(discord_id, id_col='discord_id')
+        return super().by_id(discord_id, id_col='discord_id')

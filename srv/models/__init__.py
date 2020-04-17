@@ -66,8 +66,9 @@ class Model(object):
             logger.debug(f'SQL Query: {query}')
             try:
                 cur.execute(query, params)
+                if cur.rowcount == -1: return None
                 res = cur.fetchone()
-                if not res or cur.rowcount == -1: return None
+                if not res: return None
                 if raw: return res
                 return cls(**res)
             except psycopg2.errors.UniqueViolation as e:

@@ -33,3 +33,21 @@ club_schema = {
     'required': ['name', 'permalink', 'description', 'email', 'website', 'discord_id'],
     'additionalProperties': False
 }
+
+club_guild_update_schema = {
+    'type': 'object',
+    'properties': {
+        'key': {
+            'type': 'string',
+            'enum': ['admin_role_id', 'verified_role_id', 'admin_channel_id']
+        },
+        'value': {
+            'type': 'string',
+            'pattern': r'^\d+$',
+            'minLength': 16,
+            'maxLength': 20
+        }
+    },
+    'required': ['key', 'value'],
+    'additionalProperties': False
+}
