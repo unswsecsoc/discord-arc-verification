@@ -5,7 +5,7 @@
         <div class="container">
           <article v-if="error" class="message is-danger">
             <div class="message-body">
-              <b>Error:</b> Server returned {{error}}
+              <b>Error:</b> Server returned: {{error}}
             </div>
           </article>
           <h1 v-else class="title is-1">Loading data...</h1>
@@ -20,7 +20,7 @@
           <h1 class="title is-1">Account Verification Form</h1>
           <article v-if="error" class="message is-danger">
             <div class="message-body">
-              <b>Error:</b> Server returned {{error}}
+              <b>Error:</b> Server returned: {{error}}
             </div>
           </article>
         </div>
@@ -138,6 +138,7 @@ export default Vue.extend({
         phone: !this.unswMember ? this.phone : undefined,
       } : undefined).then((data) => {
         if (!data.error) {
+          this.error = '';
           this.submitted = true;
           this.userVerified = data.user_verified;
         } else {

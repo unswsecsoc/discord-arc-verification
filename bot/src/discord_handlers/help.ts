@@ -7,8 +7,7 @@ import { DiscordObjectType } from "../lib/types";
 let helpMessage = '';
 function generateHelpMessage(): void {
     helpMessage = '```\nARC Verification Bot\n'
-                     + '====================\n'
-                     + `Source: ${BOT_URL}\n\n`;
+                     + '====================\n';
     let guildCommands = '';
     let userCommands = '';
     for (const i of Object.keys(handlers)) {
@@ -28,7 +27,7 @@ function generateHelpMessage(): void {
 
 export default function handler(arg: string, ctx: Message): void {
     if (!helpMessage) generateHelpMessage();
-
+    ctx.react('\uD83D\uDC4D');
     ctx.author.send(helpMessage);
     return;
 }

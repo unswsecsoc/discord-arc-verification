@@ -16,7 +16,7 @@ class User(Resource):
         obj = EmailVerification.by_token(token)
 
         if not obj:
-            return self.send_error(res, "InvalidToken")
+            raise falcon.HTTPBadRequest("InvalidToken")
         
         # check if user is already active
         user = UserModel.by_id(obj.user_id)

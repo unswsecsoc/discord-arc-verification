@@ -15,13 +15,28 @@ class ClubsListResource(Resource):
         obj = Club.create(req.media)
         self.send_response(res, obj.toJSON())
 
+@falcon.before(require_private_auth)
+class ClubByGuildResource(Resource):
+    def on_get(self, req: falcon.Request, res: falcon.Response, guild_id: str):
+        obj = Club.by_discord_id(guild_id)
+        if not obj:
+            raise falcon.HTTPNotFound()
+        self.send_response(res, obj.toJSON())
+    
+    """
+    Updates a property in guild
+    """
+    def on_put(self, req: falcon.Request, res: falcon.Response, guild_id: str):
+        pass
+
 class ClubResource(Resource):
-    def on_get(self, req: falcon.Request, res: falcon.Response, club_id):
+    def on_get(self, req: falcon.Request, res: falcon.Response, club_id: str):
         if club_id.isnumeric():
             obj = Club.by_id(club_id)
         else:
             obj = Club.by_permalink(club_id)
         if obj and obj.is_enabled:
             return self.send_response(res, obj.toJSON(["_id", "description", "email", "name", "permalink", "website"]) )
-        return self.send_404(res)
+        
+        raise falcon.HTTPNotFound()
 

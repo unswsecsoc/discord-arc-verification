@@ -21,15 +21,15 @@ class Private(Resource):
         club = ClubModel.by_discord_id(guild_id)
 
         if not club or not club.is_enabled:
-            return self.send_error(res, "ClubNotExists", falcon.HTTP_BAD_REQUEST)
+            raise falcon.HTTPBadRequest("ClubNotExists")
 
         if not club.verified_role_id:
-            return self.send_error(res, "ClubNotConfigured", falcon.HTTP_BAD_REQUEST)
+            raise falcon.HTTPBadRequest("ClubNotConfigured")
 
         # check if user is already verified with server
         user = UserModel.by_discord_id(user_id)
         if user and MemberModel.check_existence(user._id, club._id):
-            return self.send_error(res, "AlreadyVerified", falcon.HTTP_BAD_REQUEST)
+            raise falcon.HTTPBadRequest("AlreadyVerified")
 
         token, expires = UserVerification.create(user_id, guild_id)
         self.send_response(res, {
@@ -43,13 +43,13 @@ class User(Resource):
         obj = UserVerification.by_token(token)
 
         if not obj:
-            return self.send_error(res, 'InvalidToken', falcon.HTTP_BAD_REQUEST)
+            raise falcon.HTTPBadRequest("InvalidToken")
         
         # check if club exists and is enabled
         club = ClubModel.by_discord_id(obj.guild_id)
 
         if not club or not club.is_enabled:
-            return self.send_error("ClubNotExists")
+            raise falcon.HTTPBadRequest("ClubNotExists")
         
         # grab user once we verify existence of club
         user = UserModel.by_discord_id(obj.user_id)
@@ -64,21 +64,21 @@ class User(Resource):
         obj = UserVerification.by_token(token)
 
         if not obj:
-            return self.send_error(res, 'InvalidToken', falcon.HTTP_BAD_REQUEST)
+            raise falcon.HTTPBadRequest("InvalidToken")
         
         # check if club exists and is enabled
         club = ClubModel.by_discord_id(obj.guild_id)
         if not club or not club.is_enabled:
-            return self.send_error(res, 'ClubNotExists', falcon.HTTP_BAD_REQUEST)
+            raise falcon.HTTPBadRequest("ClubNotExists")
 
         if not club.verified_role_id:
-            return self.send_error(res, "ClubNotConfigured", falcon.HTTP_BAD_REQUEST)
+            raise falcon.HTTPBadRequest("ClubNotConfigured")
         
         # grab user once we verify existence of club
         user = UserModel.by_discord_id(obj.user_id)
 
         if user == None and "user" not in req.media:
-            return self.send_error(res, 'NoUserDetails', falcon.HTTP_BAD_REQUEST)
+            raise falcon.HTTPBadRequest("NoUserDetails")
 
         if user == None:
             user = UserModel.create({"discord_id": obj.user_id, **req.media["user"]})
