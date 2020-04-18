@@ -63,7 +63,11 @@
         <b-field label="zID" v-if="unswMember">
           <b-input v-model="zid"></b-input>
         </b-field>
-
+        <p v-if="!unswMember">
+          You are currently not able to use this form. Please contact the execs of
+          <b>{{ clubName }}</b> for assistance.
+        </p>
+        <!--
         <b-field label="Email Address" v-if="!unswMember">
           <b-input type="email" v-model="email"></b-input>
         </b-field>
@@ -71,12 +75,15 @@
         <b-field label="Phone Number" v-if="!unswMember">
           <b-input type="phone" v-model="phone"></b-input>
         </b-field>
+        -->
       </form>
       <br />
-      <div class="container">
+      <div class="container" v-if="unswMember">
         <h2 class="title is-2">Declaration</h2>
         <p>
-          By clicking submit, I am granting <b>{{ clubName }}</b> access to my personal data in accordance with <a href="https://www.arc.unsw.edu.au/privacy-policy">ARC's privacy policy</a>
+          By clicking submit, I am granting <b>{{ clubName }}</b> access to my personal data in
+          accordance with
+          <a href="https://www.arc.unsw.edu.au/privacy-policy">ARC's privacy policy</a>
           for the purpose of verifying my identity.
         </p>
         <b-button type="is-success" v-on:click="submit" :disabled="submitting" expanded>

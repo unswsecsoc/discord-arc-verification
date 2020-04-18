@@ -25,10 +25,6 @@ user_schema = {
             'type': 'boolean'
         }
     },
-    'required': ['given_name', 'family_name', 'arc_member'],
-    'anyOf': [
-        {'required': ['zid']},
-        {'required': ['email', 'phone']}
-    ],
+    'required': ['given_name', 'family_name', 'arc_member', 'zid'],
     'additionalProperties': False
 }
