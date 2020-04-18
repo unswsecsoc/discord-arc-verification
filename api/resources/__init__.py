@@ -1,5 +1,5 @@
 import falcon
-from config import bot_secret
+from config import api_secret
 
 class Resource(object):
     def send_response(self, res: falcon.Response, data: any = None, status: falcon.HTTPStatus = falcon.HTTP_OK) -> None:
@@ -21,5 +21,5 @@ class Resource(object):
         }
 
 def require_private_auth(req: falcon.Request, res: falcon.Response, resource: Resource, params):
-    if req.headers.get('AUTHORIZATION', '') != f'Bearer srv.{bot_secret}':
+    if req.headers.get('AUTHORIZATION', '') != f'Bearer srv.{api_secret}':
         raise falcon.HTTPUnauthorized('unauthorized')

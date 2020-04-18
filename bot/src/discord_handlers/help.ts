@@ -1,6 +1,5 @@
 import { Message } from "discord.js";
 import handlers, { MAX_LENGTH } from './index';
-import { BOT_URL } from "../config";
 import { DiscordObjectType } from "../lib/types";
 
 // Only generate the help message once

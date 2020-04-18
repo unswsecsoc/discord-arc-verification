@@ -1,0 +1,101 @@
+version: "3.2"
+
+services:
+  postgres:
+    image: "postgres:12-alpine"
+    environment:
+      - "POSTGRES_PASSWORD=${POSTGRES_ROOT_PASSWORD}"
+    networks:
+      - backend
+    expose:
+      - 5432
+    volumes:
+      - "postgres_data:/var/lib/postgresql/data"
+  redis:
+    image: "redis:5-alpine"
+    networks:
+      - backend
+    expose:
+      - 6379
+  traefik:
+    image: "traefik:2.2"
+    networks:
+      - frontend
+    expose:
+      - 80
+      - 443
+    ports:
+      - "80:80"
+      - "8080:8080"
+    command:
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+      - "--certificatesresolvers.vbot.acme.httpchallenge=true"
+      - "--certificatesresolvers.vbot.acme.httpchallenge.entrypoint=web"
+      - "--certificatesresolvers.vbot.acme.email=${LETSENCRYPT_EMAIL}"
+      - "--certificatesresolvers.vbot.acme.storage=/letsencrypt/acme-vbot.json"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+      - cert_data:/letsencrypt
+  bot:
+    build: ./bot
+    networks:
+      - frontend
+    environment:
+      - API_URL=http://api:8000
+      - API_SECRET=${API_SECRET}
+      - DISCORD_TOKEN=${DISCORD_TOKEN}
+    expose:
+      - 3000
+    depends_on:
+      - api
+  api:
+    build: ./api
+    networks:
+      - frontend
+      - backend
+    expose:
+      - 8000
+    environment:
+      - BOT_URL=http://bot:3000
+      - POSTGRES_HOST=postgres
+      - POSTGRES_PASSWORD=${POSTGRES_ROOT_PASSWORD}
+      - WEB_URL=${WEB_URL}
+      - API_URL=${WEB_URL}/api
+      - MAILGUN_FROM=${MAILGUN_FROM}
+      - MAILGUN_API_KEY=${MAILGUN_API_KEY}
+      - MAILGUN_DOMAIN=${MAILGUN_DOMAIN}
+      - API_SECRET=${API_SECRET}
+      - REDIS_HOST=redis
+      - ENVIRONMENT=production
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=frontend"
+      - "traefik.http.middlewares.api_stripprefix.stripprefix.prefixes=/api"
+      - "traefik.http.routers.api.rule=Host(`web.localhost`) && PathPrefix(`/api`)"
+      - "traefik.http.routers.api.entrypoints=web"
+      - "traefik.http.routers.api.middlewares=api_stripprefix"
+    depends_on:
+      - postgres
+      - redis
+  web:
+    build: ./web
+    networks:
+      - frontend
+    expose:
+      - 80
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.web.rule=Host(`web.localhost`)"
+      - "traefik.http.routers.web.entrypoints=web"
+
+volumes:
+  postgres_data:
+  cert_data:
+
+networks:
+  backend:
+  frontend:

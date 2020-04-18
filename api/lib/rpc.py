@@ -1,9 +1,9 @@
 import requests
-from config import bot_url, bot_secret
+from config import bot_url, api_secret
 from typing import List
 
 _bot_headers = {
-    'authorization': f"Bearer srv.{bot_secret}"
+    'authorization': f"Bearer srv.{api_secret}"
 }
 
 def _build_bot_url(path: str):

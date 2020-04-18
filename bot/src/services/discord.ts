@@ -1,8 +1,7 @@
 import * as config from '../config';
-import { Client, Message } from 'discord.js';
+import { Client } from 'discord.js';
 import handlers from '../discord_handlers';
 import { getClub } from './api';
-import { createContext } from 'vm';
 
 const client = new Client();
 

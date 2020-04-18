@@ -1,15 +1,15 @@
 FROM python:3.7-alpine
-COPY requirements-prod.txt /wheels/requirements/
+COPY requirements.txt /wheels/requirements/
 WORKDIR /wheels
 RUN apk add --no-cache alpine-sdk postgresql-dev linux-headers
-RUN pip wheel -r requirements/requirements-prod.txt
+RUN pip wheel -r requirements/requirements.txt
 
 FROM python:3.7-alpine
 COPY --from=0 /wheels /wheels
 COPY . /app
 WORKDIR /app
 RUN apk add --no-cache libpq
-RUN pip install -r /wheels/requirements/requirements-prod.txt -f /wheels && rm -rf /wheels
+RUN pip install -r /wheels/requirements/requirements.txt -f /wheels && rm -rf /wheels
 #ENV POSTGRES_DB="" POSTGRES_HOST="" POSTGRES_USER="" POSTGRES_PASSWORD="" \
 #    REDDIT_CLIENT_ID="" REDDIT_CLIENT_SECRET="" REDDIT_USER_AGENT="" \
 #    ROOT_URI="" FRONTEND_URI="" RECAPTCHA_PUBLIC="" RECAPTCHA_SECRET=""

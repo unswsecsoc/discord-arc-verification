@@ -1,7 +1,6 @@
-import { FastifyInstance,  } from 'fastify';
+import { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
 import DiscordClient from '../services/discord';
 import { DiscordAPIError } from 'discord.js';
-import fastify = require('fastify');
 import { ServerResponse } from 'http';
 
 export default async function (fastify: FastifyInstance): Promise<void> {
@@ -27,7 +26,7 @@ export default async function (fastify: FastifyInstance): Promise<void> {
     });
 
     function addRemoveRole(action: boolean) {
-        return async (request: fastify.FastifyRequest, reply: fastify.FastifyReply<ServerResponse>) => {
+        return async (request: FastifyRequest, reply: FastifyReply<ServerResponse>): Promise<void | FastifyReply<ServerResponse>> => {
             const {role_ids, guild_id, user_id} = request.body;
 
             const guild = DiscordClient.guilds.resolve(guild_id);

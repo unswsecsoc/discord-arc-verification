@@ -8,7 +8,9 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "lint": "eslint src/**/*.ts"
+    "lint": "eslint src/**/*.ts",
+    "build": "tsc",
+    "prod": "NODE_ENV=production node dist/index.js"
   },
   "dependencies": {
     "axios": "^0.19.2",

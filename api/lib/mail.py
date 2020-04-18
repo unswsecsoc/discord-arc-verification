@@ -2,7 +2,7 @@ import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from datetime import timedelta
-from config import web_url, mailgun_from, mailgun_domain, mailgun_api_key
+from config import mailgun_from, mailgun_domain, mailgun_api_key
 import requests
 
 s = smtplib.SMTP('mail.optusnet.com.au', 25)

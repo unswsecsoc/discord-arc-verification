@@ -55,7 +55,7 @@ export async function getClub(guildId: string): Promise<Club> {
     }
 }
 
-export async function updateClub(guildId: string, key: string, value: any): Promise<void> {
+export async function updateClub(guildId: string, key: string, value: (string|number|boolean)): Promise<void> {
     try { 
         await client.put(`/priv/clubs_by_guild/${guildId}`, {
             key,

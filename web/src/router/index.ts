@@ -22,7 +22,12 @@ const routes: Array<RouteConfig> = [
   {
     path: '/verifications/:token',
     name: 'Verification',
-    component: () => import(/* webpackChunkName: "verification" */ '../views/Verification.vue'),
+    component: () => import(/* webpackChunkName: "verification" */ '@/views/Verification.vue'),
+  },
+  {
+    path: '/verify_success',
+    name: 'Verification Success',
+    component: () => import(/* webpackChunkName: "verification" */ '@/views/VerifySuccess.vue'),
   },
 ];
 

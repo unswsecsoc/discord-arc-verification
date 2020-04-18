@@ -1,5 +1,4 @@
 import axios, { AxiosInstance } from 'axios';
-import { removeEmpty } from '@/lib';
 import { RetrieveVerificationResponse } from './responses';
 import { User } from './requests';
 
@@ -28,14 +27,14 @@ class API {
 
     const user = {
       given_name: data.given_name,
-      family_name: data.family_name,
+      family_name: data.family_name || undefined,
       arc_member: data.arc_member,
-      zid: data.zid,
-      email: data.email,
-      phone: data.phone,
+      zid: data.zid || undefined,
+      email: data.email || undefined,
+      phone: data.phone || undefined,
     };
 
-    return this.axios.post(`/verifications/${token}`, { user: removeEmpty(user) })
+    return this.axios.post(`/verifications/${token}`, { user })
       .then((res) => res.data.data as RetrieveVerificationResponse)
       .catch((err) => err.response.data as RetrieveVerificationResponse);
   }
