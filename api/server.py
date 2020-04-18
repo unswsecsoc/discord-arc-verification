@@ -5,7 +5,7 @@ import lib.db
 import lib.redis
 
 from resources.info import InfoResource
-from resources.clubs import ClubsListResource, ClubResource, ClubByGuildResource
+from resources.clubs import ClubsListResource, ClubResource, ClubByGuildResource, ClubMemberResource
 import resources.validations
 import resources.verifications
 
@@ -30,6 +30,7 @@ application.add_route('/info', InfoResource())
 
 application.add_route('/priv/clubs', ClubsListResource())
 application.add_route('/priv/clubs_by_guild/{guild_id}', ClubByGuildResource())
+application.add_route('/priv/clubs_by_guild/{guild_id}/members', ClubMemberResource())
 application.add_route('/clubs/{club_id}', ClubResource())
 
 application.add_route('/priv/verifications', resources.verifications.Private())

@@ -9,10 +9,12 @@ services:
       - 5432
     volumes:
       - "postgres_data:/var/lib/postgresql/data"
+    restart: unless-stopped
   redis:
     image: "redis:5-alpine"
     expose:
       - 6379
+    restart: unless-stopped
   traefik:
     image: "traefik:2.2"
     expose:
@@ -22,6 +24,7 @@ services:
     ports:
       - "80:80"
       - "443:443"
+    restart: unless-stopped
     command:
       - "--api.insecure=true"
       - "--providers.docker=true"
@@ -43,12 +46,14 @@ services:
       - DISCORD_TOKEN=${DISCORD_TOKEN}
     expose:
       - 3000
+    restart: unless-stopped
     depends_on:
       - api
   api:
     build: ./api
     expose:
       - 8000
+    restart: unless-stopped
     environment:
       - BOT_URL=http://bot:3000
       - POSTGRES_HOST=postgres
@@ -75,6 +80,7 @@ services:
     build: ./web
     expose:
       - 80
+    restart: unless-stopped
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.web.rule=Host(`${WEB_DOMAIN}`)"

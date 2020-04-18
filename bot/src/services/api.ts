@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from 'axios';
-import { APIResponse, NewVerification, Club } from '../lib/api_schemas';
+import { APIResponse, NewVerification, Club, User } from '../lib/api_schemas';
 import { API_URL, M2M_SECRET } from '../config';
 import { setupCache } from 'axios-cache-adapter';
 
@@ -62,6 +62,17 @@ export async function updateClub(guildId: string, key: string, value: (string|nu
             value
         });
         return;
+    } catch (e) {
+        if (e.response.status === 404) return null;
+        if (e.response.data.error) throw new APIError(e.response.data.error);
+        throw(e);
+    }
+}
+
+export async function getClubMembers(guildId: string): Promise<User[]> {
+    try { 
+        const response: AxiosResponse<APIResponse<Club>> = await client.get(`/priv/clubs_by_guild/${guildId}/members`);
+        return response.data.data as unknown as User[];
     } catch (e) {
         if (e.response.status === 404) return null;
         if (e.response.data.error) throw new APIError(e.response.data.error);

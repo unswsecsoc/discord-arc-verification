@@ -8,6 +8,7 @@ const handlers: {[key: string]: Handler} = {
     'avhelp': HelpHandler,
     'avsetverified': GuildAdminHandler.setVerificationRole,
     'avsetadmin': GuildAdminHandler.setAdminChannel,
+    'avlistmembers': GuildAdminHandler.listMembers,
 }
 
 export default handlers;

@@ -39,17 +39,19 @@ class Model(object):
     def _one_to_many(self, cls2, col, col2, offset=0, limit=50, exclude=None):
         if exclude == None: exclude = cls._default_exclude
         query = (f'SELECT {cls2._get_columns_sql(exclude=exclude)} FROM {cls2._table} '+
-            'WHERE {col2}=%s LIMIT %s OFFSET %s')
+            'WHERE {col2}=%s ' + 
+            'LIMIT %s OFFSET %s' if limit else '')
         with cls._conn, cls._conn.cursor(cursor_factory=psycopg2.extras.DictCursor) as cur:
             cur.execute(query, (getattr(self, col, self.__class__._columns[col]), limit, offset))
             return [cls(**i) for i in cur.fetchall()]
     
     @classmethod
-    def _get_columns_sql(cls, exclude=None):
+    def _get_columns_sql(cls, exclude=None, prefix=False):
         # since its only a small number of columns, we can do a linear
         # search through the array
         if exclude == None: exclude = cls._default_exclude
-        return ','.join(i for i in cls._columns.keys() if i not in exclude)
+        return ','.join((f'{cls._table}.' if prefix else '') + i 
+            for i in cls._columns.keys() if i not in exclude)
     
     @classmethod
     def _query_many(cls, query, params=tuple(), raw=False):

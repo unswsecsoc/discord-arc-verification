@@ -3,7 +3,7 @@
  */
 
 import { Message, TextChannel } from "discord.js";
-import { getClub, updateClub } from "../services/api";
+import { getClub, updateClub, getClubMembers } from "../services/api";
 
 
 export async function setAdminChannel(arg: string, ctx: Message): Promise<void> {
@@ -52,4 +52,26 @@ export async function setVerificationRole(arg: string, ctx: Message): Promise<vo
 }
 setVerificationRole.help = {
     guild: '[admin] set specified role as the role for verified users'
+}
+
+export async function listMembers(arg: string, ctx: Message): Promise<void> {
+    if (!ctx.guild) return;
+    if (!ctx.member.hasPermission('ADMINISTRATOR')) return;
+  
+    // Grab club
+    const club = await getClub(ctx.guild.id);
+    if (!club) return;
+    if (ctx.channel.id !== club.admin_channel_id) return;
+    const members = await getClubMembers(ctx.guild.id);
+    
+    let message = "";
+    for (const i of members) {
+        message += `${i.zid || i.email + ' ' + i.phone}\t\t` + 
+        `${i.given_name} ${i.family_name}\t\t` + 
+        `<@${i.discord_id}>\n`;
+    }
+    ctx.channel.send(message);
+}
+setVerificationRole.help = {
+    guild: '[admin] list verified members in server'
 }

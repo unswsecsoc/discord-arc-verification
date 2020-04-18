@@ -12,7 +12,7 @@ export interface ClubResponse extends APIBaseResponse {
   is_enabled: boolean;
 }
 
-export interface RetrieveVerificationResponse extends APIBaseResponse  {
+export interface RetrieveVerificationResponse extends APIBaseResponse {
   user_verified: boolean;
   club: ClubResponse;
 }

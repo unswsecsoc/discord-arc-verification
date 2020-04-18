@@ -16,6 +16,14 @@ class ClubsListResource(Resource):
         self.send_response(res, obj.toJSON())
 
 @falcon.before(require_private_auth)
+class ClubMemberResource(Resource):
+    def on_get(self, req: falcon.Request, res: falcon.Response, guild_id: str):
+        obj = Club.by_discord_id(guild_id)
+        if not obj:
+            raise falcon.HTTPNotFound()
+        self.send_response(res, [i.toJSON() for i in obj.get_members()])
+
+@falcon.before(require_private_auth)
 class ClubByGuildResource(Resource):
     def on_get(self, req: falcon.Request, res: falcon.Response, guild_id: str):
         obj = Club.by_discord_id(guild_id)

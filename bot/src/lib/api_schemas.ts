@@ -9,6 +9,7 @@ export interface NewVerification {
 }
 
 export interface Club {
+    _id: string;
     name: string;
     permalink: string;
     description: string;
@@ -22,4 +23,19 @@ export interface Club {
     deleted_at: number;
 
     _expires?: string;
+}
+
+export interface User {
+    _id: string;
+    given_name: string;
+    family_name: string;
+    email: string;
+    phone: string;
+    zid: string;
+    arc_member: string;
+    is_verified: string;
+    discord_id: string;
+    created_at: number;
+    updated_at: number;
+    deleted_at: number;
 }

@@ -22,7 +22,8 @@ export async function initFromGuild(arg: string, ctx: Message): Promise<void> {
         ctx.react('\uD83D\uDC4D');
         ctx.author.send(`Hi, you have requested ARC verification for ${ctx.guild.name}. ` + 
             'The server owner has requested that you complete this form before ' +
-            'a verified role will be granted.\n\n' + `Expires on: ${new Date(data.expires * 1000)}\n` +  data.url);
+            'a verified role will be granted.\n\n' + 
+            `Expires on: ${new Date(Date.now() + data.expires * 1000)}\n` +  data.url);
         
         return;
     } catch(e) {
