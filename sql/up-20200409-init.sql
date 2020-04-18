@@ -50,5 +50,7 @@ CREATE TABLE members (
 	UNIQUE(user_id, club_id)
 );
 
+CREATE INDEX member_clubs ON members(club_id);
+
 CREATE TRIGGER update_timestamp BEFORE UPDATE ON users FOR EACH ROW EXECUTE PROCEDURE trigger_set_timestamp();
 CREATE TRIGGER update_timestamp BEFORE UPDATE ON clubs FOR EACH ROW EXECUTE PROCEDURE trigger_set_timestamp();

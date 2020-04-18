@@ -72,6 +72,6 @@ export async function listMembers(arg: string, ctx: Message): Promise<void> {
     }
     ctx.channel.send(message);
 }
-setVerificationRole.help = {
+listMembers.help = {
     guild: '[admin] list verified members in server'
 }
