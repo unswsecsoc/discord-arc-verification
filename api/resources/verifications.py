@@ -32,6 +32,7 @@ class Private(Resource):
         # check if user is already verified with server
         user = UserModel.by_discord_id(user_id)
         if user and user.is_verified and MemberModel.check_existence(user._id, club._id):
+            lib.rpc.bot_add_roles(user_id, guild_id, [club.verified_role_id])
             raise falcon.HTTPBadRequest("AlreadyVerified")
 
         token, expires = UserVerification.create(user_id, guild_id)
