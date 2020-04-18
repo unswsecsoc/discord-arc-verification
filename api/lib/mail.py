@@ -5,7 +5,6 @@ from datetime import timedelta
 from config import mailgun_from, mailgun_domain, mailgun_api_key
 import requests
 
-s = smtplib.SMTP('mail.optusnet.com.au', 25)
 VALIDATION_MESSAGE = """
 Hi {},
 
@@ -29,11 +28,3 @@ def _send_email_mailgun(to: str, subject: str, message: str):
 			"to": to,
 			"subject": subject,
 			"text": message})
-
-def _send_email(to: str, subject: str, message: str):
-    msg = MIMEMultipart()
-    msg['From'] = 'test@ibis.tomn.me'
-    msg['To'] = to
-    msg['Subject'] = subject
-    msg.attach(MIMEText(message, 'plain'))
-    s.send_message(msg)
