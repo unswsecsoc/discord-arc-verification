@@ -24,9 +24,10 @@ services:
     expose:
       - 80
       - 443
+      - 8080
     ports:
       - "80:80"
-      - "8080:8080"
+      - "443:443"
     command:
       - "--api.insecure=true"
       - "--providers.docker=true"
@@ -75,8 +76,9 @@ services:
       - "traefik.enable=true"
       - "traefik.docker.network=frontend"
       - "traefik.http.middlewares.api_stripprefix.stripprefix.prefixes=/api"
-      - "traefik.http.routers.api.rule=Host(`web.localhost`) && PathPrefix(`/api`)"
-      - "traefik.http.routers.api.entrypoints=web"
+      - "traefik.http.routers.api.rule=Host(`${WEB_DOMAIN}`) && PathPrefix(`/api`)"
+      - "traefik.http.routers.api.entrypoints=websecure"
+      - "traefik.http.routers.api.tls.certresolver=vbot"
       - "traefik.http.routers.api.middlewares=api_stripprefix"
     depends_on:
       - postgres
@@ -89,8 +91,9 @@ services:
       - 80
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.web.rule=Host(`web.localhost`)"
-      - "traefik.http.routers.web.entrypoints=web"
+      - "traefik.http.routers.web.rule=Host(`${WEB_DOMAIN}`)"
+      - "traefik.http.routers.web.entrypoints=websecure"
+      - "traefik.http.routers.web.tls.certresolver=vbot"
 
 volumes:
   postgres_data:
