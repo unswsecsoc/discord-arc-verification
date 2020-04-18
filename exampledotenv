@@ -1,0 +1,9 @@
+API_SECRET=<random string>
+DISCORD_TOKEN=<discord token from dev page>
+POSTGRES_ROOT_PASSWORD=<random strng>
+WEB_URL=<url of ui>
+MAILGUN_FROM=<Email in format "Noreply <example@example.com>">
+MAILGUN_API_KEY=<mailgun key>
+MAILGUN_DOMAIN=<domain to send emails from>
+LETSENCRYPT_EMAIL=<email for receiving letsencrypt alerts>
+WEB_DOMAIN=<domain of hosted site>
