@@ -60,7 +60,7 @@
             {{ arcMember ? 'Yes' : 'No' }}
           </b-switch>
         </b-field>
-        <b-field label="zID" v-if="unswMember">
+        <b-field label="zID (in the format z1234567)" v-if="unswMember">
           <b-input v-model="zid"></b-input>
         </b-field>
         <p v-if="!unswMember">

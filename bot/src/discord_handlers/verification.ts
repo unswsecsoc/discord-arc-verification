@@ -14,6 +14,7 @@ import { createVerification, APIError, APIErrorMessage } from '../services/api';
  */
 export async function initFromGuild(arg: string, ctx: Message): Promise<void> {
     // Only respond to requests within guilds
+    if (ctx.guild == null) return;
     
     try {
         const data = await createVerification(ctx.author.id, ctx.guild.id);

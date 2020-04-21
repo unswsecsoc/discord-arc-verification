@@ -49,3 +49,7 @@ class User(Model):
     @classmethod
     def by_discord_id(cls, discord_id):
         return cls.by_id(discord_id, id_col='discord_id')
+
+    @classmethod
+    def by_zid(cls, zid):
+        return cls.by_id(zid, id_col='zid')

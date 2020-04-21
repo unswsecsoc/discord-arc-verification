@@ -13,7 +13,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 class User(Resource):
-    def on_get(self, req: falcon.Request, res: falcon.Response, token):
+    def on_post(self, req: falcon.Request, res: falcon.Response, token):
         obj = EmailVerification.by_token(token)
 
         if not obj:
@@ -23,7 +23,7 @@ class User(Resource):
         user = UserModel.by_id(obj.user_id)
         if user.is_verified:
             EmailVerification.destroy(token)
-            raise falcon.HTTPTemporaryRedirect(f'{web_url}/verify_success')
+            return self.send_response(res, {})
         
         user.set_verified()
         for club in user.get_club_discord_ids():
@@ -34,4 +34,4 @@ class User(Resource):
 
         EmailVerification.destroy(token)
 
-        raise falcon.HTTPTemporaryRedirect(f'{web_url}/verify_success')
+        return self.send_response(res, {})

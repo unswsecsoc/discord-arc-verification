@@ -1,5 +1,5 @@
 import falcon
-from config import api_url, web_url
+from config import web_url
 from . import Resource, require_private_auth
 from falcon.media.validators import jsonschema
 from store.verification import UserVerification, EmailVerification
@@ -77,7 +77,7 @@ class User(Resource):
 
         if not club.verified_role_id:
             raise falcon.HTTPBadRequest("ClubNotConfigured")
-        
+
         # grab user once we verify existence of club
         user = UserModel.by_discord_id(obj.user_id)
 
@@ -108,7 +108,7 @@ class User(Resource):
             send_validation(
                 to=f"{user.zid}@unsw.edu.au" if user.zid else user.email,
                 name=user.given_name,
-                link=f"{api_url}/validations/{token}",
+                token=token,
                 expires=expires
             )
 

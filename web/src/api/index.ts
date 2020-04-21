@@ -1,5 +1,5 @@
 import axios, { AxiosInstance } from 'axios';
-import { RetrieveVerificationResponse } from './responses';
+import { RetrieveVerificationResponse, APIBaseResponse } from './responses';
 import { User } from './requests';
 
 
@@ -37,6 +37,12 @@ class API {
     return this.axios.post(`/verifications/${token}`, { user })
       .then((res) => res.data.data as RetrieveVerificationResponse)
       .catch((err) => err.response.data as RetrieveVerificationResponse);
+  }
+
+  postValidation(token: string) {
+    return this.axios.post(`/validations/${token}`)
+      .then((res) => res.data.data as APIBaseResponse)
+      .catch((err) => err.response.data as APIBaseResponse);
   }
 }
 
