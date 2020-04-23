@@ -35,9 +35,6 @@ class Club(Model):
                 " JOIN users ON users._id=m.user_id" +
                 " WHERE m.club_id=%s AND users.is_verified=TRUE", (self._id,))
             return [models.user.User(**i) for i in cur.fetchall()]
-    
-    def update_value(self, key, value):
-        return self.__class__._query_one(f'UPDATE {self.__class__._table} SET {key}=%s WHERE _id=%s RETURNING {key}', (value, self._id))
 
     @classmethod
     def create(cls, data):

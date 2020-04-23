@@ -1,6 +1,7 @@
 FROM node:13-alpine
 
 COPY . /app
+COPY ../yarn.lock /app
 WORKDIR /app
 RUN yarn install --verbose
 RUN yarn build
