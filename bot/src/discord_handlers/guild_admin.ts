@@ -37,7 +37,7 @@ export async function setVerificationRole(arg: string, ctx: Message): Promise<vo
     if (ctx.channel.id !== club.admin_channel_id) return;
 
     const match = /<@&(\d+)>/g.exec(arg);
-    if (match.length != 2) {
+    if (match && match.length != 2) {
         ctx.reply("syntax error.");
         return;
     }
@@ -84,8 +84,8 @@ export async function getMember(arg: string, ctx: Message): Promise<void> {
     if (!club) return;
     if (ctx.channel.id !== club.admin_channel_id) return;
 
-    const match = /<@!(\d+)>/g.exec(arg);
-    if (match.length != 2) {
+    const match = /<@!?(\d+)>/g.exec(arg);
+    if (match && match.length != 2) {
         ctx.reply("syntax error.");
         return;
     }
