@@ -2,7 +2,7 @@ FROM node:13-alpine AS builder
 
 COPY . /build
 WORKDIR /build
-RUN yarn install --verbose
+RUN yarn install --non-interactive
 ENV NODE_ENV=production
 RUN yarn build
 
