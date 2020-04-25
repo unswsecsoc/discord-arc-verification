@@ -39,7 +39,7 @@ services:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
       - cert_data:/letsencrypt
   bot:
-    build: ./bot
+    image: "lecafard/discord-arc-verification_bot:latest"
     environment:
       - API_URL=http://api:8000
       - API_SECRET=${API_SECRET}
@@ -50,7 +50,7 @@ services:
     depends_on:
       - api
   api:
-    build: ./api
+    image: "lecafard/discord-arc-verification_api:latest"
     expose:
       - 8000
     restart: unless-stopped
@@ -77,7 +77,7 @@ services:
       - postgres
       - redis
   web:
-    build: ./web
+    image: "lecafard/discord-arc-verification_web:latest"
     expose:
       - 80
     restart: unless-stopped
