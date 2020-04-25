@@ -1,7 +1,10 @@
 import os
 import logging
+import secrets
 
 version = '%BUILD_VERSION%'
+
+jwt_secret = os.getenv('JWT_SECRET', secrets.token_bytes(32))
 
 environment = os.getenv('ENVIRONMENT', 'development')
 postgres_name = os.getenv('POSTGRES_DB', 'arc_verification')

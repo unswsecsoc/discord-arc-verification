@@ -2,6 +2,7 @@ import psycopg2.extras
 from datetime import datetime
 from . import Model
 import models.club
+import models.member
 
 class User(Model):
     _table = 'users'
@@ -27,9 +28,9 @@ class User(Model):
     def get_club_discord_ids(self):
         with super()._conn, super()._conn.cursor() as cur:
             cur.execute(
-                f"SELECT c._id, c.discord_id, c.verified_role_id FROM members m" + 
-                " JOIN clubs c ON c._id=m.club_id" +
-                " WHERE m.user_id=%s", (self._id,))
+                f"SELECT c._id, c.discord_id, c.verified_role_id FROM {models.member.Member._table} m " + 
+                f"JOIN {models.club.Club._table} c ON c._id=m.club_id " +
+                "WHERE m.user_id=%s", (self._id,))
             return cur.fetchall()
         
     # set user as verified

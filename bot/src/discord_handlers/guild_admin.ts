@@ -3,7 +3,7 @@
  */
 
 import { Message, TextChannel } from "discord.js";
-import { getClub, updateClub, getClubMembers } from "../services/api";
+import { getClub, updateClub, getClubMembers, getUser } from "../services/api";
 
 
 export async function setAdminChannel(arg: string, ctx: Message): Promise<void> {
@@ -74,4 +74,31 @@ export async function listMembers(arg: string, ctx: Message): Promise<void> {
 }
 listMembers.help = {
     guild: '[admin] list verified members in server'
+}
+
+
+export async function getMember(arg: string, ctx: Message): Promise<void> {
+    if (!ctx.guild) return;
+    if (!ctx.member.hasPermission('ADMINISTRATOR')) return;
+
+    // Grab club
+    const club = await getClub(ctx.guild.id);
+    if (!club) return;
+    if (ctx.channel.id !== club.admin_channel_id) return;
+
+    const match = /<@!(\d+)>/g.exec(arg);
+    if (match.length != 2) {
+        ctx.reply("syntax error.");
+        return;
+    }
+    const m = await getUser(match[1]);
+    if (!m || !m.guilds.includes(ctx.guild.id)) {
+        ctx.reply("member not found");
+        return;
+    }
+    ctx.channel.send(`${match[0]} is ${m.zid || m.email + ' ' + m.phone}\t\t` + 
+        `${m.given_name} ${m.family_name}`);
+}
+getMember.help = {
+    guild: '[admin] who\'s that user'
 }

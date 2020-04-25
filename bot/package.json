@@ -1,6 +1,6 @@
 {
   "name": "verificationbot-discord",
-  "version": "1.0.0",
+  "version": "0.2.0",
   "description": "discord bot",
   "main": "bot/index.ts",
   "repository": "https://github.com/lecafard/discord-arc-verification",

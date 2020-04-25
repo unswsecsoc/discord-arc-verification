@@ -21,7 +21,11 @@ jobs:
     steps:
     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
     - uses: actions/checkout@v2
-
+    
+    - name: "copy yarn.lock to bot and web"
+      run: |
+        cp yarn.lock bot/
+        cp yarn.lock web/
     # Runs a single command using the runners shell
     - name: "build docker api"
       uses: docker/build-push-action@v1
@@ -29,9 +33,8 @@ jobs:
         username: lecafard
         password: ${{ secrets.DOCKER_PASSWORD }}
         path: api
-        registry: docker.pkg.github.com
         add_git_labels: true
-        repository: lecafard/discord-arc-verification/api
+        repository: lecafard/discord-arc-verification_api
         tags: latest
 
     - name: "build docker bot"
@@ -40,9 +43,8 @@ jobs:
         username: lecafard
         password: ${{ secrets.DOCKER_PASSWORD }}
         path: bot
-        registry: docker.pkg.github.com
         add_git_labels: true
-        repository: lecafard/discord-arc-verification/bot
+        repository: lecafard/discord-arc-verification_bot
         tags: latest
 
     - name: "build docker web"
@@ -51,7 +53,6 @@ jobs:
         username: lecafard
         password: ${{ secrets.DOCKER_PASSWORD }}
         path: web
-        registry: docker.pkg.github.com
         add_git_labels: true
-        repository: lecafard/discord-arc-verification/web
+        repository: lecafard/discord-arc-verification_web
         tags: latest

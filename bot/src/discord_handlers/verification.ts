@@ -2,7 +2,7 @@
  * Verification related handlers.
  */
 
-import { Message } from "discord.js";
+import { Message, DiscordAPIError } from "discord.js";
 import { createVerification, APIError, APIErrorMessage } from '../services/api';
 
 
@@ -36,6 +36,12 @@ export async function initFromGuild(arg: string, ctx: Message): Promise<void> {
                     'this issue.');
             } else if (e.code === APIErrorMessage.AlreadyVerified) {
                 return;
+            }
+        } else if (e instanceof DiscordAPIError) {
+            if ((e as DiscordAPIError).code == 50013) {
+                ctx.reply('I can\'t send you a direct message. Could you go into User Settings > ' + 
+                    'Privacy & Safety and check if "Allow direct messages from server owners" ' + 
+                    'is enabled.');
             }
         }
         

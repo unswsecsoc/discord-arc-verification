@@ -1,10 +1,9 @@
 import smtplib
-from email.mime.text import MIMEText
-from email.mime.multipart import MIMEMultipart
 from datetime import timedelta
-from config import mailgun_from, mailgun_domain, mailgun_api_key
 import requests
-from config import web_url
+
+import config
+import store.token
 
 VALIDATION_MESSAGE = """
 Hi {},
@@ -18,16 +17,21 @@ The link will expire in {} hours.
 If this wasn't you, just ignore this email.
 """
 
-def send_validation(to: str, name: str, token: str, expires: timedelta):
-    message = VALIDATION_MESSAGE.format(name, web_url, token, expires.seconds/3600)
+def send_validation(to: str, name: str, token: str):
+    message = VALIDATION_MESSAGE.format(
+			name,
+			config.web_url,
+			token,
+			store.token.EXPIRES_VALIDATION//3600
+		)
     _send_email_mailgun(to, "ARC Discord Account Verification", message)
 
 
 def _send_email_mailgun(to: str, subject: str, message: str):
 	return requests.post(
-		f"https://api.mailgun.net/v3/{mailgun_domain}/messages",
-		auth=("api", mailgun_api_key),
-		data={"from": mailgun_from,
+		f"https://api.mailgun.net/v3/{config.mailgun_domain}/messages",
+		auth=("api", config.mailgun_api_key),
+		data={"from": config.mailgun_from,
 			"to": to,
 			"subject": subject,
 			"text": message})

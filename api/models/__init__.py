@@ -45,6 +45,12 @@ class Model(object):
             cur.execute(query, (getattr(self, col, self.__class__._columns[col]), limit, offset))
             return [cls(**i) for i in cur.fetchall()]
     
+    # IMPORTANT (make sure you don't let the user pick any arbitrary key when calling this function, this could open up the DB to SQLi)
+    def update_value(self, key, value):
+        if key not in self.__class__._columns:
+            return False
+        return self.__class__._query_one(f'UPDATE {self.__class__._table} SET {key}=%s WHERE _id=%s RETURNING {key}', (value, self._id))
+    
     @classmethod
     def _get_columns_sql(cls, exclude=None, prefix=False):
         # since its only a small number of columns, we can do a linear
