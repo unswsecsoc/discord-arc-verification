@@ -79,3 +79,14 @@ export async function getClubMembers(guildId: string): Promise<User[]> {
         throw(e);
     }
 }
+
+export async function getUser(userId: string): Promise<User> {
+    try { 
+        const response: AxiosResponse<APIResponse<Club>> = await client.get(`/priv/users_by_discord/${userId}`);
+        return response.data.data as unknown as User;
+    } catch (e) {
+        if (e.response.status === 404) return null;
+        if (e.response.data.error) throw new APIError(e.response.data.error);
+        throw(e);
+    }
+}

@@ -1,6 +1,7 @@
 FROM node:13-alpine AS builder
 
 COPY . /build
+COPY ../yarn.json /build
 WORKDIR /build
 RUN yarn install --non-interactive
 ENV NODE_ENV=production

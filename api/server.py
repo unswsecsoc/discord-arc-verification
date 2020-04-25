@@ -5,9 +5,10 @@ import lib.db
 import lib.redis
 
 from resources.info import InfoResource
-from resources.clubs import ClubsListResource, ClubResource, ClubByGuildResource, ClubMemberResource
+import resources.clubs
 import resources.validations
 import resources.verifications
+import resources.users
 
 def handle_base_errors(ex, req: falcon.Request, res: falcon.Response, params: any):
     raise falcon.HTTPError(ex.code, ex.message)
@@ -28,10 +29,13 @@ def my_serializer(req, resp, exception):
 application = falcon.API()
 application.add_route('/info', InfoResource())
 
-application.add_route('/priv/clubs', ClubsListResource())
-application.add_route('/priv/clubs_by_guild/{guild_id}', ClubByGuildResource())
-application.add_route('/priv/clubs_by_guild/{guild_id}/members', ClubMemberResource())
-application.add_route('/clubs/{club_id}', ClubResource())
+application.add_route('/priv/clubs', resources.clubs.List())
+application.add_route('/priv/clubs_by_guild/{guild_id}', resources.clubs.ByGuildId())
+application.add_route('/priv/clubs_by_guild/{guild_id}/members', resources.clubs.ByGuildIdMemberList())
+
+application.add_route('/clubs/{club_id}', resources.clubs.Public())
+
+application.add_route('/priv/users_by_discord/{user_id}', resources.users.DiscordUser())
 
 application.add_route('/priv/verifications', resources.verifications.Private())
 application.add_route('/verifications/{token}', resources.verifications.User())

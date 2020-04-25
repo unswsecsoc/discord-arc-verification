@@ -6,7 +6,7 @@ from . import Resource, require_private_auth
 from lib.recaptcha import validate_recaptcha
 
 @falcon.before(require_private_auth)
-class ClubsListResource(Resource):
+class List(Resource):
     def on_get(self, req: falcon.Request, res: falcon.Response):
         self.send_response(res, [i.toJSON() for i in Club.get_all()])
     
@@ -16,7 +16,7 @@ class ClubsListResource(Resource):
         self.send_response(res, obj.toJSON())
 
 @falcon.before(require_private_auth)
-class ClubMemberResource(Resource):
+class ByGuildIdMemberList(Resource):
     def on_get(self, req: falcon.Request, res: falcon.Response, guild_id: str):
         obj = Club.by_discord_id(guild_id)
         if not obj:
@@ -24,7 +24,7 @@ class ClubMemberResource(Resource):
         self.send_response(res, [i.toJSON() for i in obj.get_members()])
 
 @falcon.before(require_private_auth)
-class ClubByGuildResource(Resource):
+class ByGuildId(Resource):
     def on_get(self, req: falcon.Request, res: falcon.Response, guild_id: str):
         obj = Club.by_discord_id(guild_id)
         if not obj:
@@ -42,7 +42,7 @@ class ClubByGuildResource(Resource):
         obj.update_value(req.media['key'], req.media['value'])
         return self.send_response(res, True)
 
-class ClubResource(Resource):
+class Public(Resource):
     def on_get(self, req: falcon.Request, res: falcon.Response, club_id: str):
         if club_id.isnumeric():
             obj = Club.by_id(club_id)
