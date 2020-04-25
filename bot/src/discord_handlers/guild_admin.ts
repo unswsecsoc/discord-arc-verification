@@ -56,7 +56,6 @@ setVerificationRole.help = {
 
 export async function listMembers(arg: string, ctx: Message): Promise<void> {
     if (!ctx.guild) return;
-    if (!ctx.member.hasPermission('ADMINISTRATOR')) return;
   
     // Grab club
     const club = await getClub(ctx.guild.id);
@@ -79,7 +78,6 @@ listMembers.help = {
 
 export async function getMember(arg: string, ctx: Message): Promise<void> {
     if (!ctx.guild) return;
-    if (!ctx.member.hasPermission('ADMINISTRATOR')) return;
 
     // Grab club
     const club = await getClub(ctx.guild.id);
